@@ -396,7 +396,7 @@ public class RightAuto6 extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         FollowerConstants.lateralZeroPowerAcceleration=-60;
         FollowerConstants.forwardZeroPowerAcceleration=-25;
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
         buildPaths(0,0,90);
         robot.moveSweep(Robot.SWEEPUP,false);
