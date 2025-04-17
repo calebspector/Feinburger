@@ -386,7 +386,7 @@ public class LeftAuto4 extends OpMode {
 
         // These loop the movements of the robot
         follower.update();
-        robot.doLotsOfGoodThings();
+        robot.executeActionSequence();
         autonomousPathUpdate();
 
         // Feedback to Driver Hub

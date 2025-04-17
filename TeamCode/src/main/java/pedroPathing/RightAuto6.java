@@ -365,7 +365,7 @@ public class RightAuto6 extends OpMode {
 
         // These loop the movements of the robot
         follower.update();
-        robot.doLotsOfGoodThings();
+        robot.executeActionSequence();
         autonomousPathUpdate();
         //robot.doCameraThings(telemetryA);
         /*

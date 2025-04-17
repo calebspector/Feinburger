@@ -6,7 +6,7 @@ import java.util.List;
 
 @FunctionalInterface
 public interface Action {
-    boolean run();
+    ActionStatus run();
 }
 
 class SequentialAction implements Action{
@@ -20,13 +20,13 @@ class SequentialAction implements Action{
     }
 
     @Override
-    public boolean run() {
+    public ActionStatus run() {
         if (actions.isEmpty()) {
-            return false;
+            return ActionStatus.COMPLETED;
         }
 
-        if (actions.get(0).run()) {
-            return true;
+        if (actions.get(0).run() == ActionStatus.IN_PROGRESS) {
+            return ActionStatus.IN_PROGRESS;
         } else {
             actions = actions.subList(1, actions.size());
             return run();
@@ -46,9 +46,9 @@ class ParallelAction implements Action {
     }
 
     @Override
-    public boolean run() {
-        actions.removeIf(action -> !action.run());
-        return !actions.isEmpty();
+    public ActionStatus run() {
+        actions.removeIf(action -> action.run() == ActionStatus.COMPLETED);
+        return actions.isEmpty() ? ActionStatus.COMPLETED : ActionStatus.IN_PROGRESS;
     }
 }
 
@@ -64,8 +64,8 @@ class RaceAction implements Action {
     }
 
     @Override
-    public boolean run() {
-        return actions.stream().allMatch(Action::run);
+    public ActionStatus run() {
+        return actions.stream().allMatch(action -> action.run() == ActionStatus.IN_PROGRESS) ? ActionStatus.IN_PROGRESS : ActionStatus.COMPLETED;
     }
 }
 
@@ -79,12 +79,12 @@ class SleepAction implements Action {
 
     boolean init=false;
     @Override
-    public boolean run() {
+    public ActionStatus run() {
         if (!init){
             beginTs=System.currentTimeMillis();
             init=true;
         }
-        return System.currentTimeMillis()-beginTs < dt;
+        return (System.currentTimeMillis()-beginTs < dt) ? ActionStatus.IN_PROGRESS : ActionStatus.COMPLETED;
     }
 }
 
@@ -101,9 +101,9 @@ class InstantAction implements Action {
     }
 
     @Override
-    public boolean run() {
+    public ActionStatus run() {
         f.run();
-        return false;
+        return ActionStatus.COMPLETED;
     }
 }
 

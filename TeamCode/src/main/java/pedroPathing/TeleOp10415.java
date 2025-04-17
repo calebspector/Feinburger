@@ -118,7 +118,7 @@ public class TeleOp10415 extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        robot.doLotsOfGoodThings();
+        robot.executeActionSequence();
         if (!init) {
             init = true;
             robot.moveShoulder(Robot.SHOULDERMID, false);
