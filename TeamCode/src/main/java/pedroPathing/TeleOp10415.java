@@ -3,12 +3,15 @@ package pedroPathing;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 //import com.pedropathing.localization.PoseUpdater;
+import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
+import com.pedropathing.util.DashboardPoseTracker;
+import com.pedropathing.util.Drawing;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,8 +24,8 @@ import pedroPathing.constants.LConstants;
 public class TeleOp10415 extends OpMode {
     Pose initialPose = new Pose(15, 25, Math.toRadians(0));
     Follower follower;
-    //    private PoseUpdater poseUpdater;
-    //    private DashboardPoseTracker dashboardPoseTracker;
+        private PoseUpdater poseUpdater;
+        private DashboardPoseTracker dashboardPoseTracker;
 
     public Robot robot;
     public Gamepad currentGamepad1 = new Gamepad();
@@ -41,21 +44,21 @@ public class TeleOp10415 extends OpMode {
     private final Pose startPose = new Pose(pickup.getX() - 2.5, 37, pickup.getHeading());
     private final Pose score = new Pose(38, 68, Math.toRadians(10));
     private final Pose scoreFirst = new Pose(score.getX(), score.getY() + 2, score.getHeading());
-    private final Pose scoreHelp = new Pose(18.5, 53);
+    private final Pose scoreHelp = new Pose(18, score.getY()-4);
 
     @Override
     public void init() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(initialPose);
-        //        poseUpdater = new PoseUpdater(hardwareMap);
-        //        dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
+                poseUpdater = new PoseUpdater(hardwareMap);
+                dashboardPoseTracker = new DashboardPoseTracker(poseUpdater);
         robot = new Robot(hardwareMap, false);
 
         int armPickup = 2000;
         int armScore = 1500;
-        int lowSlides = 1150;
-        int highSlides = 1250;
+        int lowSlides = 1200;
+        int highSlides = 1350;
 
         //        double clawCloseAdjust=0.0022;
         double clawClose = 0.97; //+clawCloseAdjust*14;
@@ -152,11 +155,11 @@ public class TeleOp10415 extends OpMode {
         }
         if (!following || !follower.isBusy()) {
             following = false;
-            //poseUpdater.update();
-            //dashboardPoseTracker.update();
-            //Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
-            //Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
-            //Drawing.sendPacket();
+            poseUpdater.update();
+            dashboardPoseTracker.update();
+            Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
+            Drawing.drawRobot(poseUpdater.getPose(), "#4CAF50");
+            Drawing.sendPacket();
             if (justEnded) {
                 justEnded = false;
                 follower.breakFollowing();
@@ -303,7 +306,6 @@ public class TeleOp10415 extends OpMode {
         //follower.update();
 
         /* Telemetry Outputs of our Follower */
-        /*
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading in Degrees", Math.toDegrees(follower.getPose().getHeading()));
@@ -316,13 +318,6 @@ public class TeleOp10415 extends OpMode {
         telemetry.addData("RightSlide",robot.rightM.getCurrentPosition());
         telemetry.addData("SlideMode",robot.leftM.getMode());
         telemetry.addData("pid coefficients",robot.rightArm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
-        //telemetry.update();
-
-         */
-        try {
-            Thread.sleep(15);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        telemetry.update();
     }
 }

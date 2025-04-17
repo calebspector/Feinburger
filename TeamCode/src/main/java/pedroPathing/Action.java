@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @FunctionalInterface
-interface Action {
+public interface Action {
     boolean run();
 }
 

@@ -18,7 +18,7 @@ public class Robot {
     public static final double HANGOPEN = 0.8;
     public static final double HANGMID = 0.4;
     public static final double CLAWOPEN = 0.825;
-    public static final double CLAWCLOSE = 0.28;
+    public static final double CLAWCLOSE = 0.27;
     public static final double CLAWLOOSE = CLAWCLOSE + 0.07;
     public static final double WRISTNORMAL = 0.55;
     public static final double degToWrist = WRISTNORMAL / 180;

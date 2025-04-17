@@ -5,8 +5,9 @@ package pedroPathing.pinpoint;//
 
 import com.acmerobotics.dashboard.config.Config;
 
-import pedroPathing.pinpoint.GoBildaPinpointDriver.EncoderDirection;
-import pedroPathing.pinpoint.GoBildaPinpointDriver.GoBildaOdometryPods;
+import pedroPathing.pedro.localization.GoBildaPinpointDriver;
+import pedroPathing.pedro.localization.GoBildaPinpointDriver.EncoderDirection;
+import pedroPathing.pedro.localization.GoBildaPinpointDriver.GoBildaOdometryPods;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Config

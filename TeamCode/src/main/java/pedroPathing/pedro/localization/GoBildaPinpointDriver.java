@@ -20,7 +20,7 @@
  *   SOFTWARE.
  */
 
-package pedroPathing.pinpoint;
+package pedroPathing.pedro.localization;
 
 import static com.qualcomm.robotcore.util.TypeConversion.byteArrayToInt;
 

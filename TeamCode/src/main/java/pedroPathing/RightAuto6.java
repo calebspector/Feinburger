@@ -380,11 +380,6 @@ public class RightAuto6 extends OpMode {
                 //telemetryA.update();
 
          */
-        try {
-            Thread.sleep(15);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /** This method is called once at the init of the OpMode. **/
