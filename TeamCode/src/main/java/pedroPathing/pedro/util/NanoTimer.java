@@ -1,4 +1,4 @@
-package com.pedropathing.util;
+package pedroPathing.pedro.util;
 
 /**
  * This is the NanoTimer class. It is an elapsed time clock with nanosecond precision, or at least

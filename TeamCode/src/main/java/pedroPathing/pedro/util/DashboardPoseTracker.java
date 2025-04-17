@@ -1,7 +1,7 @@
-package com.pedropathing.util;
+package pedroPathing.pedro.util;
 
-import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.PoseUpdater;
+import pedroPathing.pedro.follower.Follower;
+import pedroPathing.pedro.localization.PoseUpdater;
 
 import java.util.ArrayList;
 

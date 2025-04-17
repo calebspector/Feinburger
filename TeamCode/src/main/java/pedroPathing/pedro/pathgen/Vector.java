@@ -1,4 +1,4 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
 /**
  * This is the Point class. This class handles storing information about vectors, which are

@@ -1,4 +1,4 @@
-package com.pedropathing.util;
+package pedroPathing.pedro.util;
 
 public class Constants {
     public static Class<?> fConstants;

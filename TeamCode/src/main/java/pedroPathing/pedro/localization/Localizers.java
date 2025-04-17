@@ -1,4 +1,4 @@
-package com.pedropathing.localization;
+package pedroPathing.pedro.localization;
 
 public enum Localizers {
     DRIVE_ENCODERS,

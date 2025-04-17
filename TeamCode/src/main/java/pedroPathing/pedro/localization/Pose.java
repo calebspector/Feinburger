@@ -1,11 +1,11 @@
-package com.pedropathing.localization;
+package pedroPathing.pedro.localization;
 
-import static com.pedropathing.pathgen.MathFunctions.rotatePose;
+import static pedroPathing.pedro.pathgen.MathFunctions.rotatePose;
 
 import androidx.annotation.NonNull;
 
-import com.pedropathing.pathgen.MathFunctions;
-import com.pedropathing.pathgen.Vector;
+import pedroPathing.pedro.pathgen.MathFunctions;
+import pedroPathing.pedro.pathgen.Vector;
 
 /**
  * This is the Pose class. It defines poses in 2D space, like the Pose2D class in Road Runner except

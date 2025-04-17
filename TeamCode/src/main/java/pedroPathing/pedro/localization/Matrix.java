@@ -1,4 +1,4 @@
-package com.pedropathing.localization;
+package pedroPathing.pedro.localization;
 
 import java.util.Arrays;
 

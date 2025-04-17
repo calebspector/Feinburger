@@ -1,16 +1,18 @@
-package com.pedropathing.localization.localizers;
+package pedroPathing.pedro.localization.localizers;
 
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import static com.pedropathing.localization.constants.PinpointConstants.*;
+import static pedroPathing.pedro.localization.constants.PinpointConstants.*;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 
-import com.pedropathing.localization.Localizer;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.MathFunctions;
-import com.pedropathing.pathgen.Vector;
-import com.pedropathing.util.NanoTimer;
+import pedroPathing.pedro.localization.Localizer;
+import pedroPathing.pedro.localization.Pose;
+import pedroPathing.pedro.pathgen.MathFunctions;
+import pedroPathing.pedro.pathgen.Vector;
+import pedroPathing.pedro.util.NanoTimer;
 
 import java.util.Objects;
 
@@ -159,7 +161,7 @@ public class PinpointLocalizer extends Localizer {
      */
     @Override
     public void setPose(Pose setPose) {
-        odo.setPosition(new Pose(setPose.getX(), setPose.getY(), setPose.getHeading()));
+        odo.setPosition(new Pose2D(DistanceUnit.INCH, setPose.getX(), setPose.getY(), AngleUnit.RADIANS, setPose.getHeading()));
         pinpointPose = setPose;
         previousHeading = setPose.getHeading();
     }
@@ -249,7 +251,8 @@ public class PinpointLocalizer extends Localizer {
         }
     }
 
-    private Pose getPoseEstimate(Pose pinpointEstimate, Pose currentPose, long deltaTime) {
+    private Pose getPoseEstimate(Pose2D pinpointEstimate2D, Pose currentPose, long deltaTime) {
+        Pose pinpointEstimate = new Pose(pinpointEstimate2D.getX(DistanceUnit.INCH), pinpointEstimate2D.getY(DistanceUnit.INCH), pinpointEstimate2D.getHeading(AngleUnit.RADIANS));
         double x;
         double y;
         double heading;

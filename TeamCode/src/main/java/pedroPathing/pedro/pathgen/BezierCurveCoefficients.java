@@ -1,4 +1,4 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
 /**
  * This is the BezierCurveCoefficients class. This class handles holding the coefficients for each

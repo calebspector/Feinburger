@@ -1,8 +1,8 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
 import androidx.annotation.NonNull;
 
-import com.pedropathing.localization.Pose;
+import pedroPathing.pedro.localization.Pose;
 
 /**
  * This is the Point class. This class handles storing information about the location of points in

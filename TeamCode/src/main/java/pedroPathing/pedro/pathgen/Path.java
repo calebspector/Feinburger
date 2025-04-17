@@ -1,7 +1,7 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.localization.Pose;
+import pedroPathing.pedro.follower.FollowerConstants;
+import pedroPathing.pedro.localization.Pose;
 
 import java.util.ArrayList;
 

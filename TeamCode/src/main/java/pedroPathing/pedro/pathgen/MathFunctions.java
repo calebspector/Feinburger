@@ -1,6 +1,6 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
-import com.pedropathing.localization.Pose;
+import pedroPathing.pedro.localization.Pose;
 
 /**
  * This is the MathFunctions class. This contains many useful math related methods that I use in

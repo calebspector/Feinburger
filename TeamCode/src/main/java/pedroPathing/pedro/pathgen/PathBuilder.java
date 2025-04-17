@@ -1,4 +1,4 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
 import java.util.ArrayList;
 

@@ -1,18 +1,16 @@
-package com.pedropathing.localization;
-import static com.pedropathing.follower.FollowerConstants.localizers;
+package pedroPathing.pedro.localization;
+import static pedroPathing.pedro.follower.FollowerConstants.localizers;
 
-import com.pedropathing.util.Constants;
+import pedroPathing.pedro.util.Constants;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import com.pedropathing.localization.localizers.DriveEncoderLocalizer;
-import com.pedropathing.localization.localizers.OTOSLocalizer;
-import com.pedropathing.localization.localizers.PinpointLocalizer;
-import com.pedropathing.localization.localizers.ThreeWheelIMULocalizer;
-import com.pedropathing.localization.localizers.ThreeWheelLocalizer;
-import com.pedropathing.localization.localizers.TwoWheelLocalizer;
-import com.pedropathing.pathgen.MathFunctions;
-import com.pedropathing.pathgen.Vector;
+
+import java.util.Objects;
+
+import pedroPathing.pedro.localization.localizers.PinpointLocalizer;
+import pedroPathing.pedro.pathgen.MathFunctions;
+import pedroPathing.pedro.pathgen.Vector;
 
 /**
  * This is the PoseUpdater class. This class handles getting pose data from the localizer and returning
@@ -115,22 +113,10 @@ public class PoseUpdater {
     }
 
     private static Localizer createLocalizer(HardwareMap hardwareMap) {
-        switch (localizers) {
-            case DRIVE_ENCODERS:
-                return new DriveEncoderLocalizer(hardwareMap);
-            case TWO_WHEEL:
-                return new TwoWheelLocalizer(hardwareMap);
-            case THREE_WHEEL:
-                return new ThreeWheelLocalizer(hardwareMap);
-            case THREE_WHEEL_IMU:
-                return new ThreeWheelIMULocalizer(hardwareMap);
-            case OTOS:
-                return new OTOSLocalizer(hardwareMap);
-            case PINPOINT:
-                return new PinpointLocalizer(hardwareMap);
-            default:
-                throw new IllegalArgumentException("Unsupported localizer type");
+        if (Objects.requireNonNull(localizers) == Localizers.PINPOINT) {
+            return new PinpointLocalizer(hardwareMap);
         }
+        throw new IllegalArgumentException("Unsupported localizer type");
     }
 
 

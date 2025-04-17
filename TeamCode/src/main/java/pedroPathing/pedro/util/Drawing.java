@@ -1,16 +1,16 @@
-package com.pedropathing.util;
+package pedroPathing.pedro.util;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
-import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.MathFunctions;
-import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.PathChain;
-import com.pedropathing.pathgen.Point;
-import com.pedropathing.pathgen.Vector;
+import pedroPathing.pedro.follower.Follower;
+import pedroPathing.pedro.localization.Pose;
+import pedroPathing.pedro.pathgen.MathFunctions;
+import pedroPathing.pedro.pathgen.Path;
+import pedroPathing.pedro.pathgen.PathChain;
+import pedroPathing.pedro.pathgen.Point;
+import pedroPathing.pedro.pathgen.Vector;
 
 /**
  * This is the Drawing class. It handles the drawing of stuff on FTC Dashboard, like the robot.

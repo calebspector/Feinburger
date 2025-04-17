@@ -2,9 +2,9 @@ package pedroPathing.examples;
 
 import android.provider.SyncStateContract;
 
-import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
-import com.pedropathing.util.Constants;
+import pedroPathing.pedro.follower.Follower;
+import pedroPathing.pedro.localization.Pose;
+import pedroPathing.pedro.util.Constants;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 

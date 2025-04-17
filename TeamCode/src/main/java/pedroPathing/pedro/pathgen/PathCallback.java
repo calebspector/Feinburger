@@ -1,6 +1,6 @@
-package com.pedropathing.pathgen;
+package pedroPathing.pedro.pathgen;
 
-import com.pedropathing.util.SingleRunAction;
+import pedroPathing.pedro.util.SingleRunAction;
 
 /**
  * This is the PathCallback class. This class handles callbacks of Runnables in PathChains.

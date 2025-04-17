@@ -1,8 +1,10 @@
-package com.pedropathing.localization.constants;
+package pedroPathing.pedro.localization.constants;
 
 import com.acmerobotics.dashboard.config.Config;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import pedroPathing.pedro.localization.GoBildaPinpointDriver;
 
 /**
  * This is the PinpointConstants class. It holds many constants and parameters for the Pinpoint Localizer.
