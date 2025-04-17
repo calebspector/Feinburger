@@ -94,11 +94,11 @@ public class RightAuto6 extends OpMode {
                 .addParametricCallback(0.1, () -> robot.moveWrist(Robot.degToWrist * (90 - angle) + Robot.WRISTNORMAL, false))
 
                 //.addParametricCallback(0, () -> robot.moveShoulder(Robot.SHOULDERSCORE))
-                .addParametricCallback(0.9, () -> robot.actions.add(new SequentialAction(
-                        new SleepAction(putScoreArmBack),
-                        robot.moveHang(Robot.HANGOPEN, true),
-                        robot.moveUp(Robot.UPDOWN, true)
-                )))
+//                .addParametricCallback(0.9, () -> robot.actions.add(new SequentialAction(
+//                        new SleepAction(putScoreArmBack),
+//                        robot.moveHang(Robot.HANGOPEN, true),
+//                        robot.moveUp(Robot.UPDOWN, true)
+//                )))
                 .addPath(new BezierLine(new Point(scoreFirst), new Point(scoreFirst2)))
                 .setConstantHeadingInterpolation(scoreFirst.getHeading())
                 .setZeroPowerAccelerationMultiplier(2.5)
@@ -315,6 +315,8 @@ public class RightAuto6 extends OpMode {
                 break;
             case 2:
                 if (!follower.isBusy()) {
+                    robot.moveHang(Robot.HANGOPEN, false);
+                    robot.moveUp(Robot.UPDOWN, false);
                     robot.zeroArm(false);
                     robot.moveClaw(Robot.CLAWCLOSE, false);
                     try {

@@ -1,6 +1,7 @@
-package com.pedropathing.localization.localizers;
+package pedroPathing.pedro.localization.localizers;
 
 
+import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import static com.pedropathing.localization.constants.PinpointConstants.*;
 
@@ -13,8 +14,6 @@ import com.pedropathing.pathgen.Vector;
 import com.pedropathing.util.NanoTimer;
 
 import java.util.Objects;
-
-import pedroPathing.pedro.localization.GoBildaPinpointDriver;
 
 /**
  * This is the Pinpoint class. This class extends the Localizer superclass and is a

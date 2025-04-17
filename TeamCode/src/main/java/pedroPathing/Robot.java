@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.ArrayList;
 
 public class Robot {
+    public static final int SLEEPTIME = 20;
+
     public static final double SWEEPDOWN = 0;
     public static final double SWEEPUP = 1;
     public static final double UPSCORE = .95;
@@ -402,7 +404,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -415,7 +417,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -458,7 +460,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -471,7 +473,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -487,7 +489,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -533,7 +535,7 @@ public class Robot {
         if (!action) {
             while (opMode && !a.run()) {
                 try {
-                    Thread.sleep(80);
+                    Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
