@@ -281,10 +281,11 @@ public class RightAuto6 extends OpMode {
                 .addParametricCallback(0, () -> robot.moveSlides(150, false))
                 .addParametricCallback(0, () -> robot.moveArm(2100, false))
                 .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForArm(900, true, true), robot.moveSlides(2500, true))))
-                .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForSlides(1800, true, true), robot.moveShoulder(Robot.SHOULDERBASKET, true), new SleepAction(200), robot.waitForSlides(2350, true, true), robot.moveClaw(Robot.CLAWOPEN, true))))
+                .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForSlides(1800, true, true), robot.moveShoulder(Robot.SHOULDERBASKET, true)/*, new SleepAction(200), robot.waitForSlides(2300, true, true), robot.moveClaw(Robot.CLAWOPEN, true)*/)))
                 //.addParametricCallback(0.95,() -> robot.runAfterDelay(() -> {},0))
                 .addPath(new BezierLine(new Point(finish2), new Point(finish)))
                 .setLinearHeadingInterpolation(finish2.getHeading(), finish.getHeading())
+                .addParametricCallback(0.8,() -> robot.moveClaw(Robot.CLAWOPEN,false))
                 .build();
         park = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(finish), new Point(parkPose)))
