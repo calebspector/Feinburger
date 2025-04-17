@@ -413,7 +413,7 @@ public class LeftAuto4 extends OpMode {
         FollowerConstants.forwardZeroPowerAcceleration=-18;
         FollowerConstants.xMovement=40;
         FollowerConstants.yMovement=30;
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
         //robot.initCamera();
         //robot.disableProcessor();
