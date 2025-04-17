@@ -1,7 +1,7 @@
 package pedroPathing.constants;
 
 import pedroPathing.pedro.localization.GoBildaPinpointDriver;
-import pedroPathing.pinpoint.PinpointConstants;
+import pedroPathing.pedro.localization.constants.PinpointConstants;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
