@@ -46,7 +46,7 @@ public class RightAuto6 extends OpMode {
     private final Pose score = new Pose(37, 68, Math.toRadians(0));
 
     private final Pose pickUpFromGround = new Pose(14, 44, Math.toRadians(-90));
-    private final Pose finish = new Pose(10, 128, Math.toRadians(-60));
+    private final Pose finish = new Pose(10, 125, Math.toRadians(-45));
     private final Pose finish2 = new Pose(11, finish.getY() - 10, Math.toRadians(-90));
     private final Pose parkPose = new Pose(15, 25, Math.toRadians(-90));
     //private final Pose parkControlPose = new Pose(8, 50, Math.toRadians(0));
