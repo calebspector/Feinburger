@@ -107,7 +107,7 @@ public class TeleOp10415 extends OpMode {
                     .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
                     .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
                     .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false));
-            score.setY(score.getY() - 0.0);
+            score.setY(score.getY() - 0.20);
             score.setX(score.getX() + 0.05);
             //clawClose-=clawCloseAdjust;
         }
@@ -221,13 +221,14 @@ public class TeleOp10415 extends OpMode {
                 robot.moveSlides(200, false);
                 robot.actions.add(new SequentialAction(
                         robot.waitForArm(1600, true, true),
-                        robot.moveShoulder(Robot.SHOULDERMID, true),
                         robot.moveSlides(2500, true)
                 ));
                 robot.actions.add(new SequentialAction(
                         robot.moveShoulder(Robot.SHOULDERMID, true),
                         new SleepAction(300),
-                        robot.moveShoulder(Robot.SHOULDERSCORE, true)
+                        robot.moveShoulder(Robot.SHOULDERSCORE, true),
+                        robot.waitForSlides(2000,true,true),
+                        robot.moveShoulder(Robot.SHOULDERBASKET,true)
                 ));
                 /*
                 robot.runAfterDelay(() -> {
@@ -240,10 +241,6 @@ public class TeleOp10415 extends OpMode {
 
                  */
                 robot.moveWrist(Robot.degToWrist * 180, false);
-                robot.actions.add(new SequentialAction(
-                        robot.waitForSlides(1900, true, true),
-                        robot.moveShoulder(Robot.SHOULDERBASKET, true)
-                ));
             } else if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down) {
                 robot.actions.add(new SequentialAction(
                         robot.zeroArm(true),

@@ -374,7 +374,7 @@ public class Robot {
     public class WaitForArm implements Action {
         int pos;
         int tolerance = -1;
-        boolean up;
+        boolean up=false;
         public WaitForArm(int pos, int tolerance) {
             this.pos = pos;
             this.tolerance = tolerance;
@@ -382,15 +382,16 @@ public class Robot {
         public WaitForArm(int pos, boolean up) {
             this.pos = pos;
             this.up = up;
+            tolerance=-1;
         }
         public boolean run() {
             int mult2 = 1;
             if (up) {
                 mult2 = -1;
             }
-            if (tolerance != -1 && !(opMode && Math.abs(rightArm.getCurrentPosition() - (int)(pos * mult)) > (int)(tolerance * mult))) {
+            if (tolerance != -1 && Math.abs(rightArm.getCurrentPosition() - (int)(pos * mult)) < (int)(tolerance * mult)) {
                 return false;
-            } else if (tolerance == -1 && !(opMode && mult2 * (rightArm.getCurrentPosition() - (int)(pos * mult)) > 0)) {
+            } else if (tolerance == -1 && mult2 * (rightArm.getCurrentPosition() - (int)(pos * mult)) < 0) {
                 return false;
             }
             return true;
@@ -428,7 +429,7 @@ public class Robot {
     public class WaitForSlides implements Action {
         int pos;
         int tolerance = -1;
-        boolean up;
+        boolean up=false;
         public WaitForSlides(int pos, int tolerance) {
             this.pos = pos;
             this.tolerance = tolerance;
@@ -436,15 +437,16 @@ public class Robot {
         public WaitForSlides(int pos, boolean up) {
             this.pos = pos;
             this.up = up;
+            tolerance=-1;
         }
         public boolean run() {
             int mult2 = 1;
             if (up) {
                 mult2 = -1;
             }
-            if (tolerance != -1 && !(opMode && Math.abs(rightArm.getCurrentPosition() - (int)(pos * mult)) > (int)(tolerance * mult))) {
+            if (tolerance != -1 && Math.abs(leftM.getCurrentPosition() - (int)(pos * mult)) < (int)(tolerance * mult)) {
                 return false;
-            } else if (tolerance == -1 && !(opMode && mult2 * (rightArm.getCurrentPosition() - (int)(pos * mult)) > 0)) {
+            } else if (tolerance == -1 && mult2 * (leftM.getCurrentPosition() - (int)(pos * mult)) < 0) {
                 return false;
             }
             return true;
