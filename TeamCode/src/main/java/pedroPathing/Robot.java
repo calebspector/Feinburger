@@ -402,7 +402,7 @@ public class Robot {
     public Action waitForArm(int pos, int tolerance, boolean action) {
         Action a = new WaitForArm(pos, tolerance);
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -415,7 +415,7 @@ public class Robot {
     public Action waitForArm(int pos, boolean up, boolean action) {
         Action a = new WaitForArm(pos, up);
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -458,7 +458,7 @@ public class Robot {
     public Action waitForSlides(int pos, int tolerance, boolean action) {
         Action a = new WaitForSlides(pos, tolerance);
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -471,7 +471,7 @@ public class Robot {
     public Action waitForSlides(int pos, boolean up, boolean action) {
         Action a = new WaitForSlides(pos, up);
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -487,7 +487,7 @@ public class Robot {
     public Action zeroArm(boolean action) {
         Action a = new ZeroArm();
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -533,7 +533,7 @@ public class Robot {
     public Action zeroSlides(boolean action) {
         Action a = new ZeroSlides();
         if (!action) {
-            while (opMode && !a.run()) {
+            while (opMode && a.run()) {
                 try {
                     Thread.sleep(SLEEPTIME);
                 } catch (InterruptedException e) {
@@ -546,7 +546,7 @@ public class Robot {
     public class ZeroSlides implements Action {
         int timesAtZero = 0;
         double power = -0.7;
-        int vel = 20;
+        int vel = 50;
         boolean init = false;
 
         @Override

@@ -48,7 +48,7 @@ public class LeftAuto4 extends OpMode {
      * It is necessary to do this so that all the paths are built before the auto starts. **/
     public void buildPaths(double x, double y, double angle,double x2,double y2,double angle2) {
         //int armPickup =0;
-        int armScore = 2000;
+        int armScore = 2100;
         int lowSlides=500;
         int highSlides=2500;
         int raiseSlidesArmValue=1100;
@@ -408,7 +408,7 @@ public class LeftAuto4 extends OpMode {
         robot=new Robot(hardwareMap,true);
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         Constants.setConstants(FConstants.class, LConstants.class);
-        FollowerConstants.zeroPowerAccelerationMultiplier=1.75;
+        FollowerConstants.zeroPowerAccelerationMultiplier=2;
         FollowerConstants.lateralZeroPowerAcceleration=-45;
         FollowerConstants.forwardZeroPowerAcceleration=-18;
         FollowerConstants.xMovement=40;

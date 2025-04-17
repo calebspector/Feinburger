@@ -93,7 +93,7 @@ public class TeleOp10415 extends OpMode {
                     .setLinearHeadingInterpolation(pickup.getHeading(), score.getHeading())
                     //.setZeroPowerAccelerationMultiplier(8)
                     .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                    .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                    .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                     .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                     .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false));
             pickup.setY(pickup.getY() - 0.20);

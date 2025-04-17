@@ -29,7 +29,7 @@ public class RightAuto6 extends OpMode {
 
     private final Pose startPose = new Pose(8, 67, Math.toRadians(0));
     private final Pose scoreFirstHelp = new Pose(36, 78, Math.toRadians(0));
-    private final Pose dropOffGather = new Pose(20, 42, Math.toRadians(0));
+    private final Pose dropOffGather = new Pose(20, 40, Math.toRadians(10));
     private final Pose dropOffGatherTemp = new Pose(dropOffGather.getX(), 74);
     //private final Pose push = new Pose(25, 43, Math.toRadians(0));
     private final Pose pushInter = new Pose(35, 40.5, Math.toRadians(-25));
@@ -43,7 +43,7 @@ public class RightAuto6 extends OpMode {
     private final Pose dropOff3Help = new Pose(28, 20);
     private final Pose pickup = new Pose(10.5, 39, Math.toRadians(0));
     private final Pose scoreHelp = new Pose(20, 53);
-    private final Pose score = new Pose(37, 68, Math.toRadians(0));
+    private final Pose score = new Pose(37, 69, Math.toRadians(0));
 
     private final Pose pickUpFromGround = new Pose(14, 44, Math.toRadians(-90));
     private final Pose finish = new Pose(10, 125, Math.toRadians(-45));
@@ -171,7 +171,7 @@ public class RightAuto6 extends OpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                 .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                 .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
 
@@ -190,7 +190,7 @@ public class RightAuto6 extends OpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                 .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                 .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
                 //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
@@ -210,7 +210,7 @@ public class RightAuto6 extends OpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                 .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                 .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
                 //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
@@ -230,7 +230,7 @@ public class RightAuto6 extends OpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                 .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                 .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides + 50, false))
                 //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
@@ -250,7 +250,7 @@ public class RightAuto6 extends OpMode {
                 .setConstantHeadingInterpolation(score.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.2, () -> robot.moveSlides(lowSlides, false))
+                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                 .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                 .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides + 50, false))
                 //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
@@ -285,7 +285,7 @@ public class RightAuto6 extends OpMode {
                 //.addParametricCallback(0.95,() -> robot.runAfterDelay(() -> {},0))
                 .addPath(new BezierLine(new Point(finish2), new Point(finish)))
                 .setLinearHeadingInterpolation(finish2.getHeading(), finish.getHeading())
-                .addParametricCallback(0.8,() -> robot.moveClaw(Robot.CLAWOPEN,false))
+                //.addParametricCallback(0.8,() -> robot.moveClaw(Robot.CLAWOPEN,false))
                 .build();
         park = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(finish), new Point(parkPose)))
@@ -338,9 +338,13 @@ public class RightAuto6 extends OpMode {
                 }
                 break;
             case 3:
-                if (!follower.isBusy()) {
-                    robot.waitForSlides(false);
-                    robot.waitForArm(false);
+                if (!follower.isBusy()&&follower.getVelocity().getMagnitude()<4) {
+                    robot.moveClaw(Robot.CLAWOPEN,false);
+                    try{
+                        Thread.sleep(300);
+                    }catch (InterruptedException e){
+                        throw new RuntimeException(e);
+                    }
                     follower.followPath(park, true);
                     setPathState(4);
                 }
