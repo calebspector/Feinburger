@@ -5,6 +5,7 @@ import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.PathBuilder;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
@@ -28,12 +29,12 @@ public class RightAuto6 extends OpMode {
     private int pathState;
 
     private final Pose startPose = new Pose(8, 67, Math.toRadians(0));
-    private final Pose scoreFirstHelp = new Pose(36, 78, Math.toRadians(0));
+    private final Pose scoreFirstHelp = new Pose(37, 76, Math.toRadians(0));
     private final Pose dropOffGather = new Pose(20, 40, Math.toRadians(10));
     private final Pose dropOffGatherTemp = new Pose(dropOffGather.getX(), 74);
     //private final Pose push = new Pose(25, 43, Math.toRadians(0));
     private final Pose pushInter = new Pose(35, 40.5, Math.toRadians(-25));
-    private final Pose dropOff = new Pose(26, 37, Math.toRadians(-135));
+    private final Pose dropOff = new Pose(26, 37, Math.toRadians(-125));
     //private final Pose push2 = new Pose(25, 36, Math.toRadians(0));
     private final Pose pushInter2 = new Pose(35.5, 32, Math.toRadians(-30));
     private final Pose dropOff2 = new Pose(30, 28, Math.toRadians(-120));
@@ -41,11 +42,11 @@ public class RightAuto6 extends OpMode {
     private final Pose pushInter3 = new Pose(35, 21.5, Math.toRadians(-30));
     private final Pose dropOff3 = new Pose(24, 23, Math.toRadians(-100));
     private final Pose dropOff3Help = new Pose(28, 20);
-    private final Pose pickup = new Pose(10.5, 39, Math.toRadians(0));
+    private Pose pickup = new Pose(10, 39, Math.toRadians(0));
     private final Pose scoreHelp = new Pose(20, 53);
-    private final Pose score = new Pose(37, 69, Math.toRadians(0));
+    private final Pose score = new Pose(37, 70, Math.toRadians(0));
 
-    private final Pose pickUpFromGround = new Pose(14, 44, Math.toRadians(-90));
+    private final Pose pickUpFromGround = new Pose(10, 44, Math.toRadians(-90));
     private final Pose finish = new Pose(10, 125, Math.toRadians(-45));
     private final Pose finish2 = new Pose(11, finish.getY() - 10, Math.toRadians(-90));
     private final Pose parkPose = new Pose(15, 25, Math.toRadians(-90));
@@ -85,7 +86,7 @@ public class RightAuto6 extends OpMode {
         scorePreload = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(startPose), new Point(scoreFirst)))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scoreFirstHelp.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
+                .setZeroPowerAccelerationMultiplier(16)
                 .addParametricCallback(0, () -> robot.moveUp(Robot.UPSCORE, false))
                 //.addParametricCallback(0,() -> robot.moveArm(robot.getArmForSlidesAndHeight(slideVal,4)))
                 .addParametricCallback(0, () -> robot.moveArm(200, false))
@@ -102,8 +103,10 @@ public class RightAuto6 extends OpMode {
                 .addPath(new BezierLine(new Point(scoreFirst), new Point(scoreFirst2)))
                 .setConstantHeadingInterpolation(scoreFirst.getHeading())
                 .setZeroPowerAccelerationMultiplier(2.5)
+                //.addParametricCallback(0, () -> robot.moveUp(Robot.UPSCORE, false))
                 .build();
-        gather = follower.pathBuilder()
+        //gather = follower.pathBuilder()
+        PathBuilder gatherTraj = follower.pathBuilder()
                 .addPath(new BezierCurve(new Point(scoreFirst), new Point(dropOffGatherTemp), new Point(dropOffGather)))
                 .setLinearHeadingInterpolation(scoreFirst.getHeading(), dropOffGather.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
@@ -164,87 +167,32 @@ public class RightAuto6 extends OpMode {
                 .setLinearHeadingInterpolation(dropOff3.getHeading(), pickup.getHeading())
                 .addParametricCallback(0.1, () -> robot.moveSweep(Robot.SWEEPUP, false))
                 //.addParametricCallback(0,() -> robot.moveArm(armPickup))
-                .addParametricCallback(clawClose, () -> robot.actions.add(new SequentialAction(new SleepAction(closeOnFirstWait), robot.moveClaw(Robot.CLAWCLOSE, true))))
+                .addParametricCallback(clawClose, () -> robot.actions.add(new SequentialAction(new SleepAction(closeOnFirstWait), robot.moveClaw(Robot.CLAWCLOSE, true))));
+        for (int i=0;i<4;i++) {
+            gatherTraj
+                    //.build();
+                    //scorePath1 = follower.pathBuilder()
+                    .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(scoreFirstSpec)))
+                    .setConstantHeadingInterpolation(score.getHeading())
+                    .setZeroPowerAccelerationMultiplier(8)
+                    .addParametricCallback(0, () -> robot.moveArm(armScore, false))
+                    .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
+                    .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
+                    .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
+
+                    .addPath(new BezierLine(new Point(scoreFirstSpec), new Point(pickup)))
+                    .setConstantHeadingInterpolation(pickup.getHeading())
+                    .setZeroPowerAccelerationMultiplier(8)
+                    .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
+                    .addParametricCallback(0, () -> robot.moveArm(armPickup, false))
+                    .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
+                    .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
+                    .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false));
+            pickup.setY(pickup.getY()+0.5);
+            pickup.setX(pickup.getX()-0.2);
+        }
                 //.build();
-                //scorePath1 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(scoreFirstSpec)))
-                .setConstantHeadingInterpolation(score.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
-                .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
-                .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
-
-                .addPath(new BezierLine(new Point(scoreFirstSpec), new Point(pickup)))
-                .setConstantHeadingInterpolation(pickup.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
-                .addParametricCallback(0, () -> robot.moveArm(armPickup, false))
-                .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
-                .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
-                .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false))
-                //.build();
-
-                //scorePath2 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(score)))
-                .setConstantHeadingInterpolation(score.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
-                .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
-                .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
-                //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
-
-                .addPath(new BezierLine(new Point(score), new Point(pickup)))
-                .setConstantHeadingInterpolation(pickup.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
-                .addParametricCallback(0, () -> robot.moveArm(armPickup, false))
-                .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
-                .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
-                .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false))
-                //.build();
-
-                //scorePath3 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(score)))
-                .setConstantHeadingInterpolation(score.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
-                .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
-                .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false))
-                //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
-
-                .addPath(new BezierLine(new Point(score), new Point(pickup)))
-                .setConstantHeadingInterpolation(pickup.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
-                .addParametricCallback(0, () -> robot.moveArm(armPickup, false))
-                .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
-                .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
-                .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false))
-                // .build();
-
-                //scorePath4 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(score)))
-                .setConstantHeadingInterpolation(score.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(0, () -> robot.moveArm(armScore, false))
-                .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
-                .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
-                .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides + 50, false))
-                //.addParametricCallback(0.95, () -> robot.moveClaw(robot.CLAWOPEN))
-
-                .addPath(new BezierLine(new Point(score), new Point(pickup)))
-                .setConstantHeadingInterpolation(pickup.getHeading())
-                .setZeroPowerAccelerationMultiplier(8)
-                .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
-                .addParametricCallback(0, () -> robot.moveArm(armPickup, false))
-                .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
-                .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
-                .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false))
-                //        .build();
-
+        gatherTraj
                 // scorePath5 = follower.pathBuilder()
                 .addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp), new Point(score)))
                 .setConstantHeadingInterpolation(score.getHeading())
@@ -267,7 +215,7 @@ public class RightAuto6 extends OpMode {
                 .addPath(new BezierLine(new Point(score), new Point(pickUpFromGround)))
                 .setLinearHeadingInterpolation(score.getHeading(), pickUpFromGround.getHeading())
                 .addParametricCallback(clawOpen, () -> robot.actions.add(new SequentialAction(new SleepAction(clawOpenWait), robot.moveClaw(Robot.CLAWOPEN, true))))
-                .addParametricCallback(0.05, () -> robot.actions.add(robot.zeroArm(true)))
+                .addParametricCallback(0.1, () -> robot.actions.add(robot.zeroArm(true)))
                 .addParametricCallback(0.2, () -> robot.moveSlides(300, false))
                 .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
                 .addParametricCallback(0.5, () -> robot.moveShoulder(Robot.SHOULDERSCORE, false))
@@ -281,12 +229,13 @@ public class RightAuto6 extends OpMode {
                 .addParametricCallback(0, () -> robot.moveSlides(150, false))
                 .addParametricCallback(0, () -> robot.moveArm(2100, false))
                 .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForArm(900, true, true), robot.moveSlides(2500, true))))
-                .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForSlides(1800, true, true), robot.moveShoulder(Robot.SHOULDERBASKET, true)/*, new SleepAction(200), robot.waitForSlides(2300, true, true), robot.moveClaw(Robot.CLAWOPEN, true)*/)))
+                .addParametricCallback(0, () -> robot.actions.add(new SequentialAction(robot.waitForSlides(1800, true, true), robot.moveShoulder(Robot.SHOULDERBASKET, true), new SleepAction(200), robot.waitForSlides(2300, true, true), robot.moveClaw(Robot.CLAWOPEN, true))))
                 //.addParametricCallback(0.95,() -> robot.runAfterDelay(() -> {},0))
                 .addPath(new BezierLine(new Point(finish2), new Point(finish)))
-                .setLinearHeadingInterpolation(finish2.getHeading(), finish.getHeading())
+                .setLinearHeadingInterpolation(finish2.getHeading(), finish.getHeading());
                 //.addParametricCallback(0.8,() -> robot.moveClaw(Robot.CLAWOPEN,false))
-                .build();
+                //.build();
+        gather = gatherTraj.build();
         park = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(finish), new Point(parkPose)))
                 .setConstantHeadingInterpolation(parkPose.getHeading())
@@ -338,13 +287,7 @@ public class RightAuto6 extends OpMode {
                 }
                 break;
             case 3:
-                if (!follower.isBusy()&&follower.getVelocity().getMagnitude()<4) {
-                    robot.moveClaw(Robot.CLAWOPEN,false);
-                    try{
-                        Thread.sleep(300);
-                    }catch (InterruptedException e){
-                        throw new RuntimeException(e);
-                    }
+                if (!follower.isBusy()) {
                     follower.followPath(park, true);
                     setPathState(4);
                 }

@@ -58,6 +58,7 @@ public class Robot {
     public boolean armZeroing = false;
     public boolean slidesZeroing = false;
     public boolean opMode;
+    public PIDCoefficients arm;
     /** @ noinspection deprecation*/ //public VisionPortal vp;
     public ArrayList < Action > actions = new ArrayList < > ();
     public Robot(HardwareMap hardwareMap, boolean reset) {
@@ -99,7 +100,7 @@ public class Robot {
         actuator = hardwareMap.get(Servo.class, "actuator");
         pullUp = hardwareMap.get(Servo.class, "pullUp");
 
-        PIDCoefficients arm = new PIDCoefficients(4, 0, 0.01);
+        arm = new PIDCoefficients(8, 0, 0.01);
         rightArm.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, arm);
         opMode = true;
     }
@@ -126,6 +127,13 @@ public class Robot {
             rightArm.setTargetPosition(position);
             rightArm.setTargetPositionTolerance(30);
             rightArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            if (Math.abs(rightArm.getCurrentPosition()-position)>700) {
+                arm = new PIDCoefficients(8, 0, 0.01);
+            }
+            else{
+                arm = new PIDCoefficients(3,0,0.02);
+            }
+            rightArm.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, arm);
             rightArm.setPower(power);
             return false;
         }

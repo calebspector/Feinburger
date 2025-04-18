@@ -42,9 +42,9 @@ public class TeleOp10415 extends OpMode {
     //    public double scoreAdjust=0.8;
     private final Pose pickup = new Pose(10.5, 38, Math.toRadians(0));
     private final Pose startPose = new Pose(pickup.getX() - 2.5, 37, pickup.getHeading());
-    private final Pose score = new Pose(38, 68, Math.toRadians(10));
+    private final Pose score = new Pose(35, 66, Math.toRadians(10));
     private final Pose scoreFirst = new Pose(score.getX(), score.getY() + 2, score.getHeading());
-    private final Pose scoreHelp = new Pose(18, score.getY()-4);
+    private final Pose scoreHelp = new Pose(score.getX()-4, score.getY()-4);
 
     @Override
     public void init() {
@@ -57,7 +57,7 @@ public class TeleOp10415 extends OpMode {
 
         int armPickup = 2000;
         int armScore = 1500;
-        int lowSlides = 1200;
+        int lowSlides = 1150;
         int highSlides = 1350;
 
         //        double clawCloseAdjust=0.0022;
@@ -89,15 +89,15 @@ public class TeleOp10415 extends OpMode {
                 .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
                 .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false));
         for (int i = 0; i < 15; i++) {
-            builder.addPath(new BezierLine(new Point(pickup), new Point(score)))
+            builder.addPath(new BezierCurve(new Point(pickup), new Point(scoreHelp),new Point(score)))
                     .setLinearHeadingInterpolation(pickup.getHeading(), score.getHeading())
                     //.setZeroPowerAccelerationMultiplier(8)
                     .addParametricCallback(0, () -> robot.moveArm(armScore, false))
                     .addParametricCallback(0.05, () -> robot.moveSlides(lowSlides, false))
                     .addParametricCallback(liftShoulder, () -> robot.actions.add(new SequentialAction(new SleepAction(liftShoulderWait), robot.moveShoulder(Robot.SHOULDERSCORE, true))))
                     .addParametricCallback(slidesUp, () -> robot.moveSlides(highSlides, false));
-            pickup.setY(pickup.getY() - 0.20);
-            pickup.setX(pickup.getX() + 0.05);
+            pickup.setY(pickup.getY() + 0.3);
+            pickup.setX(pickup.getX() - 0.2);
             builder
                     .addPath(new BezierLine(new Point(score), new Point(pickup)))
                     .setLinearHeadingInterpolation(score.getHeading(), pickup.getHeading())
@@ -107,8 +107,8 @@ public class TeleOp10415 extends OpMode {
                     .addParametricCallback(waitSlides, () -> robot.actions.add(new SequentialAction(robot.moveSlides(downPos, true), robot.waitForSlides(100, false, true), robot.zeroSlides(true))))
                     .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
                     .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false));
-            score.setY(score.getY() - 0.20);
-            score.setX(score.getX() + 0.05);
+            score.setY(score.getY() - 0.5);
+            score.setX(score.getX() - 0.2);
             //clawClose-=clawCloseAdjust;
         }
         scoreLotsOfShit = builder.build();
