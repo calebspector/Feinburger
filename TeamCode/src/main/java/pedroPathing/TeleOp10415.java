@@ -244,7 +244,7 @@ public class TeleOp10415 extends OpMode {
             } else if (currentGamepad2.dpad_down && !previousGamepad2.dpad_down) {
                 robot.actions.add(new SequentialAction(
                         robot.zeroArm(true),
-                        robot.moveArm(95, true)
+                        robot.moveArm(200, true)
                 ));
                 robot.moveShoulder(Robot.SHOULDERMID, false);
                 robot.moveWrist(Robot.degToWrist * 180, false);
@@ -281,7 +281,7 @@ public class TeleOp10415 extends OpMode {
                             new SleepAction(400),
                             robot.moveShoulder(Robot.SHOULDERMID, true),
                             robot.moveWrist(Robot.degToWrist * 180, true),
-                            robot.moveArm(95, true)
+                            robot.moveArm(200, true)
                     ));
                     robot.actions.add(new SequentialAction(
                             robot.waitForArm(1860, false, true),

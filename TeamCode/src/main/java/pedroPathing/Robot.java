@@ -16,7 +16,7 @@ public class Robot {
     public static final double SWEEPUP = 1;
     public static final double UPSCORE = .95;
     public static final double UPDOWN = 0.14;
-    public static final double HANGCLOSE = 0.3;
+    public static final double HANGCLOSE = 0.28;
     public static final double HANGOPEN = 0.8;
     public static final double HANGMID = 0.4;
     public static final double CLAWOPEN = 0.825;

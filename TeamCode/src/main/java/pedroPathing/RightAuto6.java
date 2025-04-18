@@ -29,7 +29,7 @@ public class RightAuto6 extends OpMode {
     private int pathState;
 
     private final Pose startPose = new Pose(8, 67, Math.toRadians(0));
-    private final Pose scoreFirstHelp = new Pose(37, 76, Math.toRadians(0));
+    private final Pose scoreFirstHelp = new Pose(37, 78, Math.toRadians(0));
     private final Pose dropOffGather = new Pose(20, 40, Math.toRadians(10));
     private final Pose dropOffGatherTemp = new Pose(dropOffGather.getX(), 74);
     //private final Pose push = new Pose(25, 43, Math.toRadians(0));
@@ -42,14 +42,14 @@ public class RightAuto6 extends OpMode {
     private final Pose pushInter3 = new Pose(35, 21.5, Math.toRadians(-30));
     private final Pose dropOff3 = new Pose(24, 23, Math.toRadians(-100));
     private final Pose dropOff3Help = new Pose(28, 20);
-    private Pose pickup = new Pose(10, 39, Math.toRadians(0));
+    private Pose pickup = new Pose(10, 37, Math.toRadians(0));
     private final Pose scoreHelp = new Pose(20, 53);
     private final Pose score = new Pose(37, 70, Math.toRadians(0));
 
-    private final Pose pickUpFromGround = new Pose(10, 44, Math.toRadians(-90));
+    private final Pose pickUpFromGround = new Pose(10, 45, Math.toRadians(-90));
     private final Pose finish = new Pose(10, 125, Math.toRadians(-45));
     private final Pose finish2 = new Pose(11, finish.getY() - 10, Math.toRadians(-90));
-    private final Pose parkPose = new Pose(15, 25, Math.toRadians(-90));
+    private final Pose parkPose = new Pose(12, 25, Math.toRadians(-90));
     //private final Pose parkControlPose = new Pose(8, 50, Math.toRadians(0));
 
     /* These are our Paths and PathChains that we will define in buildPaths() */
@@ -63,7 +63,7 @@ public class RightAuto6 extends OpMode {
         int lowSlides = 1150;
         int highSlides = 1250;
 
-        double clawClose = 0.90;
+        double clawClose = 0.96;
         double liftShoulder = 0;
         int liftShoulderWait = 100;
         double lowerShoulder = 0.01;
@@ -76,6 +76,9 @@ public class RightAuto6 extends OpMode {
         int putScoreArmBack = 550;
 
         double offsety = -1 * (x - Math.cos(Math.toRadians(angle)));
+        if (offsety>0){
+            //offsety/=2;
+        }
         double offsetSlides = 1 * (y + 3 - Math.sin(Math.toRadians(angle)));
         int slideVal = 150 + (int)(offsetSlides * Robot.slideTicksToInch);
         Pose scoreFirst = new Pose(scoreFirstHelp.getX() - 0.5, scoreFirstHelp.getY() + offsety, scoreFirstHelp.getHeading());
@@ -86,7 +89,7 @@ public class RightAuto6 extends OpMode {
         scorePreload = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(startPose), new Point(scoreFirst)))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scoreFirstHelp.getHeading())
-                .setZeroPowerAccelerationMultiplier(16)
+                //.setZeroPowerAccelerationMultiplier(8)
                 .addParametricCallback(0, () -> robot.moveUp(Robot.UPSCORE, false))
                 //.addParametricCallback(0,() -> robot.moveArm(robot.getArmForSlidesAndHeight(slideVal,4)))
                 .addParametricCallback(0, () -> robot.moveArm(200, false))
@@ -110,6 +113,7 @@ public class RightAuto6 extends OpMode {
                 .addPath(new BezierCurve(new Point(scoreFirst), new Point(dropOffGatherTemp), new Point(dropOffGather)))
                 .setLinearHeadingInterpolation(scoreFirst.getHeading(), dropOffGather.getHeading())
                 .setZeroPowerAccelerationMultiplier(8)
+                .addParametricCallback(0.2,() -> robot.moveUp(Robot.UPDOWN, false))
                 //.addParametricCallback(0,() -> robot.moveHang(robot.HANGOPEN))
                 //.addParametricCallback(0,() -> robot.moveUp(robot.UPDOWN))
                 .addParametricCallback(0, () -> robot.moveShoulder(Robot.SHOULDERMID, false))
@@ -163,7 +167,7 @@ public class RightAuto6 extends OpMode {
                 //.addParametricCallback(0, () -> robot.moveShoulder(Robot.SHOULDERPICKUP))
                 .addParametricCallback(0, () -> robot.moveSlides(downPos, false))
 
-                .addPath(new BezierLine(new Point(dropOff3), new Point(new Pose(pickup.getX() - 1.5, pickup.getY() - 2, pickup.getHeading()))))
+                .addPath(new BezierLine(new Point(dropOff3), new Point(new Pose(pickup.getX() - 1.5, pickup.getY() - 3, pickup.getHeading()))))
                 .setLinearHeadingInterpolation(dropOff3.getHeading(), pickup.getHeading())
                 .addParametricCallback(0.1, () -> robot.moveSweep(Robot.SWEEPUP, false))
                 //.addParametricCallback(0,() -> robot.moveArm(armPickup))
@@ -189,7 +193,7 @@ public class RightAuto6 extends OpMode {
                     .addParametricCallback(lowerShoulder, () -> robot.moveShoulder(Robot.SHOULDERPICKUP, false))
                     .addParametricCallback(clawClose, () -> robot.moveClaw(Robot.CLAWCLOSE, false));
             pickup.setY(pickup.getY()+0.5);
-            pickup.setX(pickup.getX()-0.2);
+            pickup.setX(pickup.getX()-0.35);
         }
                 //.build();
         gatherTraj
@@ -266,7 +270,6 @@ public class RightAuto6 extends OpMode {
             case 2:
                 if (!follower.isBusy()) {
                     robot.moveHang(Robot.HANGOPEN, false);
-                    robot.moveUp(Robot.UPDOWN, false);
                     robot.zeroArm(false);
                     robot.moveClaw(Robot.CLAWCLOSE, false);
                     try {
